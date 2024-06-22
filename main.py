@@ -46,3 +46,5 @@ def checkforvideos():
 
       webhook.execute()
       checkforvideos()
+
+checkforvideos()
