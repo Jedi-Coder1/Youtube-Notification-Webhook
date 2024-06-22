@@ -5,6 +5,7 @@ import re
 with open("youtubedata.json", "r") as f:
     data=json.load(f)
     WebhookUrl = data["webhookurl"]
+    f.close()
 
 def checkforvideos():
   
@@ -35,6 +36,7 @@ def checkforvideos():
       #dumping the data
       with open("youtubedata.json", "w") as f:
         json.dump(data, f)
+        f.close()
 
 
       #sending the msg
