@@ -2,14 +2,11 @@ import json
 import requests
 import re
 
-from discord_webhook import DiscordWebhook
-
-#Enter Webhook Url Here
-WebhookUrl = ''
+with open("youtubedata.json", "r") as f:
+    data=json.load(f)
+    WebhookUrl = data["webhookurl"]
 
 def checkforvideos():
-  with open("youtubedata.json", "r") as f:
-    data=json.load(f)
   
   print("Now Checking!")
 
@@ -41,10 +38,14 @@ def checkforvideos():
 
 
       #sending the msg
-      msg = f"@everyone {data[str(youtube_channel)]['channel_name']} Just Uploaded A Video Or He is Live Go Check It Out: {latest_video_url}"
-      webhook = DiscordWebhook(url=WebhookUrl, content=msg)
-
-      webhook.execute()
-      checkforvideos()
+      msg = f"{data[str(youtube_channel)]['channel_name']} Just Uploaded A Video Or He is Live Go Check It Out: {latest_video_url}"
+      try:
+        requests.post(WebhookUrl, data={
+            "content": str(msg)
+        })
+      except Exception as e:
+        print(f"Error Sending Discord Webhook Request Error Msg: {e}")
+      else:
+        checkforvideos()
 
 checkforvideos()
